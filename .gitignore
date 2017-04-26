@@ -1,1 +1,6 @@
-libbdplus-0.1.2.tar.bz2
+BUILD/*
+BUILDROOT/*
+RPMS/*
+SPECS/*
+SRPMS/*
+libbdplus*.tar.gz

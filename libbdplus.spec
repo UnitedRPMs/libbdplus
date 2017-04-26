@@ -1,10 +1,20 @@
+%global gitdate 20170426
+%global commit0 795a9e43d904f948c096dbe34a8e647177b5bb2a
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global gver .git%{shortcommit0}
+
 Name:           libbdplus
 Version:        0.1.2
-Release:        2%{?dist}
+Release:        3%{?gver}%{?dist}
 Summary:        Open implementation of BD+ protocol
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbdplus.html
+# Do you want see the current commit and release? http://git.videolan.org/?p=libbdplus.git
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
+
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool
 
 BuildRequires:  libgcrypt-devel
 BuildRequires:  libaacs-devel >= 0.7.0
@@ -28,8 +38,21 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
+# Our trick; we need the current commit...
+# The git vesion in F24 no accept the git checkout --force %{_commit}; only the master 
+# Please in each rebuild make a updating with the current commit
+ git init
+ git add .
+ git remote add origin https://git.videolan.org/git/libbdplus.git
+ git fetch --depth=1 origin master
+ git checkout --force %{commit0} || git checkout --force master
+
+./bootstrap    
 
 %build
+
+autoreconf -vif
+
 %configure --disable-static
 make %{?_smp_mflags}
 
@@ -55,6 +78,10 @@ find %{buildroot} -name '*.la' -delete
 
 
 %changelog
+
+* Wed Apr 26 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 0.1.2-3.git795a9e4
+- Updated to 0.1.2-3.git795a9e4
+
 * Sun Mar 19 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 0.1.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
