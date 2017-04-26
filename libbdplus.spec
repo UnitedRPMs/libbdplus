@@ -15,6 +15,7 @@ Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
+BuildRequires:	git
 
 BuildRequires:  libgcrypt-devel
 BuildRequires:  libaacs-devel >= 0.7.0
