@@ -9,8 +9,7 @@ Release:        3%{?gver}%{?dist}
 Summary:        Open implementation of BD+ protocol
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbdplus.html
-# Do you want see the current commit and release? http://git.videolan.org/?p=libbdplus.git
-Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
+Source1:	libbdplus-snapshot
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -37,16 +36,8 @@ developing applications that use %{name}.
 
 
 %prep
-%setup -q
-
-# Our trick; we need the current commit...
-# The git vesion in F24 no accept the git checkout --force %{_commit}; only the master 
-# Please in each rebuild make a updating with the current commit
- git init
- git add .
- git remote add origin https://git.videolan.org/git/libbdplus.git
- git fetch --depth=1 origin master
- git checkout --force %{commit0} || git checkout --force master
+%{S:1} -c %{commit0}
+%setup -T -D -n %{name}-%{shortcommit0}
 
 ./bootstrap    
 
